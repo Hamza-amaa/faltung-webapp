@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon.png" type="image/png">
+    <title>Interaktive Faltungssimulation - Bachelorarbeit</title>
+
+    <!-- JSXGraph -->
+    <script src="https://cdn.jsdelivr.net/npm/jsxgraph@1.8.0/distrib/jsxgraphcore.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsxgraph@1.8.0/distrib/jsxgraph.css" />
+
+    <!-- MathJax -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body class="theme-dark">
+    <div class="app-container">
+        <header class="app-header">
+            <div class="top-bar">
+                <div>
+                    <h1>Zur Verdeutlichung der grafischen Faltung</h1>
+                    <p class="subtitle">
+                        Visuelle Darstellung des konvolutionellen Vorgangs:
+                        <span class="formula">y(t) = x(t) · h(t)</span>
+                    </p>
+                </div>
+                <button id="themeToggle" class="theme-toggle">Theme: Dark</button>
+            </div>
+        </header>
+
+        <div class="main-layout">
+            <!-- Linke Spalte: Parameter-Steuerung -->
+            <aside class="sidebar-left">
+                <div class="panel-box">
+                    <h2>Eingangsimpuls x(t)</h2>
+                    <label for="input-signal" class="label-inline">Signalform:</label>
+                    <select id="input-signal" class="signal-select">
+                        <option value="rechteck">Rechteck</option>
+                        <option value="dreieck">Dreieck</option>
+                        <option value="gauss" selected>Gauss</option>
+                        <option value="exponential">Exponentiell</option>
+                    </select>
+
+                    <p class="description">
+                        Wähle hier die Form des Eingangssignals x(t). Über die Schieberegler
+                        kannst du Amplitude A<sub>x</sub>, Pulsbreite Δt<sub>x</sub> und Verschiebung τ<sub>x</sub> einstellen.
+                    </p>
+                </div>
+
+                <div class="panel-box">
+                    <h2>Impulsantwort h(t)</h2>
+                    <label for="impulse-response" class="label-inline">Systemtyp:</label>
+                    <select id="impulse-response" class="signal-select">
+                        <option value="spalt">Spalt-TP (Rechteck)</option>
+                        <option value="tp1">TP 1. Ordnung</option>
+                        <option value="tp2">TP 2. Ordnung</option>
+                        <option value="gauss_tp">Gauss-TP</option>
+                    </select>
+
+                    <p class="description">
+                        Wähle hier die Impulsantwort des LZI-Systems. Δt<sub>h</sub> entspricht
+                        der Zeitkonstante bzw. Pulsbreite des Tiefpasses.
+                    </p>
+                </div>
+
+                <div class="panel-box info-panel">
+                    <h2>Hinweis</h2>
+                    <p class="description">
+                        Die Faltung beschreibt, wie ein lineares zeitinvariantes System (LZI)
+                        mit Impulsantwort h(t) auf ein Eingangssignal x(t) reagiert. Die Animation
+                        illustriert das grafische Faltungsintegral:
+                    </p>
+                    <p class="formula-block">
+                        \( y(t) = \int_{-\infty}^{\infty} x(\tau)\, h(t-\tau) \,\mathrm{d}\tau \)
+                    </p>
+                </div>
+            </aside>
+
+            <!-- Mittlere Spalte: Plots -->
+            <main class="main-center">
+                <section class="graph-section">
+                    <div class="graph-container">
+                        <div class="graph-header">
+                            <span class="graph-title">Eingangssignal x(τ)</span>
+                            <span class="graph-legend" style="color: #FF6384;">■ x(τ)</span>
+                        </div>
+                        <div id="boxeingangsimpuls" class="jxgbox"></div>
+                    </div>
+
+                    <div class="graph-container">
+                        <div class="graph-header">
+                            <span class="graph-title">Impulsantwort h(τ) und h(t-τ)</span>
+                            <span class="graph-legend">
+                                <span style="color: #4BC0C0;">■ h(τ)</span>
+                                <span style="color: #FF9900;">■ h(t-τ)</span>
+                            </span>
+                        </div>
+                        <div id="boximpulsantwort" class="jxgbox"></div>
+                    </div>
+
+                    <div class="graph-container">
+                        <div class="graph-header">
+                            <span class="graph-title">Multiplikation x(τ) · h(t-τ)</span>
+                            <span class="graph-legend" style="color: #FFCE56;">■ Produkt</span>
+                        </div>
+                        <div id="boxmultiplikation" class="jxgbox"></div>
+                    </div>
+
+                    <div class="graph-container">
+                        <div class="graph-header">
+                            <span class="graph-title">Ausgangssignal y(t)</span>
+                            <span class="graph-legend" style="color: #36A2EB;">■ y(t)</span>
+                        </div>
+                        <div id="boxintegration" class="jxgbox"></div>
+                    </div>
+                </section>
+            </main>
+
+            <!-- Rechte Spalte: Slider & Animation -->
+            <aside class="sidebar-right">
+                <div class="panel-box">
+                    <h2>Parameter x(t)</h2>
+                    <div id="boxEinImp" class="control-board slider-container"></div>
+                </div>
+
+                <div class="panel-box">
+                    <h2>Parameter h(t)</h2>
+                    <div id="boxImpAnt" class="control-board slider-container"></div>
+                </div>
+
+                <div class="panel-box">
+                    <h2>Zeitsteuerung t</h2>
+                    <div id="boxAnimation" class="control-board slider-container"></div>
+
+                    <div class="time-controls">
+                        <button onclick="stepTime(-0.2)">⟵ Step</button>
+                        <button onclick="startAnimation()">▶ Start</button>
+                        <button onclick="pauseAnimation()">⏸ Pause</button>
+                        <button onclick="stepTime(0.2)">Step ⟶</button>
+                        <button onclick="resetApp()">⟲ Reset</button>
+                    </div>
+                </div>
+
+                <div class="panel-box results-panel">
+                    <h2>Ausgewählte Ergebnisse</h2>
+                    <div id="results-content" class="results-display"></div>
+                    <p class="info-note">Maximaler Fehler ≤ 2%</p>
+                </div>
+            </aside>
+        </div>
+
+        <!-- Übungsbereich -->
+        <section class="exercise-section">
+            <div class="panel-box exercise-box">
+                <h2>Übungen zur Faltung</h2>
+
+                <p id="exercise-title" class="exercise-title">Aufgabe 1</p>
+                <p id="exercise-description" class="exercise-description">
+                    Wähle eine Aufgabe aus, lade die Startwerte und beobachte,
+                    wie sich das Ausgangssignal y(t) verändert.
+                </p>
+
+                <div class="exercise-controls">
+                    <button id="exercise-prev">◀ Vorherige</button>
+                    <button id="exercise-next">Nächste ▶</button>
+                    <button id="exercise-load">Aufgabe laden</button>
+                    <button id="exercise-solution-btn">Musterlösung anzeigen</button>
+                </div>
+
+                <div id="exercise-solution" class="exercise-solution-box">
+                    Hinweis: Die Aufgaben ändern nur die Einstellungen von x(t), h(t) und t.
+                    Du kannst jederzeit eigene Werte ausprobieren.
+                </div>
+
+                <div class="mc-block">
+                    <h3>Multiple-Choice-Frage</h3>
+                    <p id="mc-question" class="mc-question-text">
+                        (Wähle zuerst eine Aufgabe und lade sie.)
+                    </p>
+                    <div id="mc-options" class="mc-options">
+                        <!-- Optionen werden per JavaScript eingefügt -->
+                    </div>
+                    <button id="mc-check-btn" class="mc-check-btn">Antwort prüfen</button>
+                    <div id="mc-feedback" class="mc-feedback"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reale LTI-Systeme -->
+        <section class="realsystem-section">
+            <div class="panel-box realsystem-box">
+                <h2>Reale LTI-Systeme</h2>
+
+                <p class="realsystem-intro">
+                    Wähle ein reales physikalisches oder elektrisches System.
+                    Die entsprechende Impulsantwort h(t), typische Parameter und eine kurze
+                    Theoriebox werden automatisch in die Simulation übernommen.
+                </p>
+
+                <label for="realsystem-select" class="label-inline">System auswählen:</label>
+                <select id="realsystem-select" class="signal-select">
+                    <option value="rc_lowpass">RC-Tiefpass (1. Ordnung)</option>
+                    <option value="rc_highpass">RC-Hochpass</option>
+                    <option value="rl_lowpass">RL-Tiefpass</option>
+                    <option value="rl_highpass">RL-Hochpass</option>
+                    <option value="mass_spring">Masse-Feder-Dämpfer (2. Ordnung)</option>
+                    <option value="moving_average">Moving-Average-Filter</option>
+                </select>
+
+                <button id="load-system-btn" class="system-load-btn">
+                    System in Simulation laden
+                </button>
+
+                <div id="system-info" class="system-info-box">
+                    <h3>Systembeschreibung</h3>
+                    <p id="system-description">(Bitte oben ein System auswählen und laden.)</p>
+
+                    <h4>Impulsantwort h(t)</h4>
+                    <p id="system-formula">—</p>
+
+                    <h4>Typische Anwendung</h4>
+                    <p id="system-application">—</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="./script.js"></script>
+</body>
+</html>

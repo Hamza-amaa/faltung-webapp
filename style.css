@@ -1,0 +1,614 @@
+/* ===== GLOBAL STYLES ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Dark-Theme Grundeinstellungen */
+body.theme-dark {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    color: #e0e0e0;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    min-height: 100vh;
+    padding: 20px;
+    line-height: 1.6;
+}
+
+/* Scrollbars leicht anpassen */
+body * {
+    scrollbar-width: thin;
+    scrollbar-color: #00bcd4 #222;
+}
+
+/* ===== APP CONTAINER ===== */
+.app-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    border-radius: 16px;
+    padding: 18px 20px 22px 20px;
+    background: radial-gradient(circle at top left, rgba(0, 188, 212, 0.08), transparent 55%),
+                radial-gradient(circle at bottom right, rgba(63, 81, 181, 0.1), transparent 55%),
+                rgba(0, 0, 0, 0.75);
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* ===== HEADER ===== */
+.app-header {
+    margin-bottom: 16px;
+}
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.app-header h1 {
+    font-size: 1.8rem;
+    margin-bottom: 4px;
+    letter-spacing: 0.02em;
+}
+
+.subtitle {
+    font-size: 0.95rem;
+    opacity: 0.8;
+}
+
+.formula {
+    font-family: "Cambria Math", "STIX Two Math", serif;
+    font-style: italic;
+}
+
+/* Theme-Toggle-Button */
+.theme-toggle {
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: 1px solid #666;
+    background: #222;
+    color: #f5f5f5;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+}
+
+.theme-toggle:hover {
+    transform: translateY(-1px);
+}
+
+/* ===== MAIN LAYOUT (3 SPALTEN) ===== */
+.main-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr 320px;
+    gap: 18px;
+    align-items: start;
+}
+
+/* ===== SIDEBARS & PANELS ===== */
+.sidebar-left,
+.sidebar-right {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.panel-box {
+    background: rgba(18, 18, 18, 0.92);
+    border-radius: 12px;
+    padding: 10px 12px 12px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.panel-box:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    border-color: rgba(0, 188, 212, 0.4);
+}
+
+.panel-box h2 {
+    font-size: 1.05rem;
+    margin-bottom: 6px;
+}
+
+.description {
+    font-size: 0.95rem;
+    font-weight: 500;
+    opacity: 0.95;
+}
+
+/* ===== SELECTS & LABELS ===== */
+.label-inline {
+    font-size: 0.85rem;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.signal-select {
+    width: 100%;
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(15, 15, 15, 0.95);
+    color: inherit;
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+}
+
+/* ===== MAIN CENTER (GRAFIKBEREICH) ===== */
+.main-center {
+    display: flex;
+    flex-direction: column;
+}
+
+.graph-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* ===== GRAFIK-CONTAINER ===== */
+.graph-container {
+    background: rgba(18, 18, 18, 0.92);
+    border-radius: 12px;
+    padding: 6px 8px 10px 8px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+
+.graph-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 4px;
+}
+
+.graph-title {
+    font-size: 0.95rem;
+}
+
+.graph-legend {
+    font-size: 0.78rem;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* ===== JSXGRAPH BOXEN ===== */
+.jxgbox {
+    width: 100%;
+    height: 160px;
+    background: #121212 !important;
+    border-radius: 8px;
+    overflow: visible !important;
+}
+
+/* ===== CONTROL-BOARDS (Slider-Felder) ===== */
+.control-board {
+    height: 140px;
+    border-radius: 10px;
+    overflow: visible;
+    position: relative;
+}
+
+.slider-container {
+    background: #181818;
+}
+
+/* ===== ZEIT-KONTROLLEN ===== */
+.time-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+    justify-content: center;
+}
+
+.time-controls button {
+    padding: 4px 8px;
+    border-radius: 999px;
+    border: 1px solid rgba(0, 188, 212, 0.6);
+    background: #101820;
+    color: #e0f7fa;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+.time-controls button:hover {
+    background: #004d60;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 188, 212, 0.5);
+}
+
+/* ===== RESULTS PANEL ===== */
+.results-panel {
+    font-size: 0.88rem;
+}
+
+.results-display p {
+    margin-bottom: 4px;
+}
+
+.info-note {
+    margin-top: 6px;
+    font-size: 0.78rem;
+    opacity: 1;
+    color: #e53935;
+}
+
+/* ===== INFO PANEL ===== */
+.info-panel .formula-block {
+    font-size: 1.0rem;
+    font-weight: 600;
+    margin-top: 6px;
+    padding: 4px 6px;
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.35);
+}
+
+/* ===== ÜBUNGSBEREICH ===== */
+.exercise-section {
+    margin-top: 16px;
+}
+
+.exercise-box .exercise-title {
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+}
+
+.exercise-box .exercise-description {
+    font-size: 0.98rem;
+    margin-bottom: 8px;
+}
+
+.exercise-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.exercise-controls button {
+    padding: 5px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(76, 175, 80, 0.7);
+    background: #0f2014;
+    color: #c8e6c9;
+    font-size: 0.86rem;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+.exercise-controls button:hover {
+    background: #1b5e20;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.6);
+}
+
+.exercise-solution-box {
+    font-size: 0.95rem;
+    padding: 6px 8px;
+    border-radius: 6px;
+    background: rgba(255, 235, 59, 0.12);
+    border: 1px solid rgba(255, 235, 59, 0.5);
+    color: #fff59d;
+    margin-bottom: 10px;
+}
+
+/* ===== MULTIPLE-CHOICE-BEREICH ===== */
+.mc-block {
+    margin-top: 10px;
+    padding-top: 6px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.mc-block h3 {
+    font-size: 1rem;
+    margin-bottom: 4px;
+}
+
+.mc-question-text {
+    font-size: 0.96rem;
+    margin-bottom: 6px;
+}
+
+.mc-options {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 6px;
+}
+
+.mc-option-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+
+.mc-option-label input[type="radio"] {
+    transform: scale(1.1);
+}
+
+.mc-check-btn {
+    padding: 4px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(33, 150, 243, 0.7);
+    background: #0d1b26;
+    color: #bbdefb;
+    font-size: 0.86rem;
+    cursor: pointer;
+    margin-bottom: 6px;
+    transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+.mc-check-btn:hover {
+    background: #1565c0;
+    box-shadow: 0 2px 8px rgba(33, 150, 243, 0.6);
+    transform: translateY(-1px);
+}
+
+.mc-feedback {
+    font-size: 0.9rem;
+    min-height: 18px;
+}
+
+.mc-feedback.ok {
+    color: #81c784;
+    font-weight: 600;
+}
+
+.mc-feedback.err {
+    color: #ef9a9a;
+    font-weight: 600;
+}
+
+/* ===== REALE LTI-SYSTEME ===== */
+.realsystem-section {
+    margin-top: 20px;
+}
+
+.realsystem-box {
+    background: rgba(20, 20, 20, 0.92);
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 188, 212, 0.35);
+}
+
+.realsystem-intro {
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+}
+
+.system-load-btn {
+    margin-top: 8px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid #00acc1;
+    background: #003d40;
+    color: #e0f7fa;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+.system-load-btn:hover {
+    background: #006064;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 188, 212, 0.5);
+}
+
+.system-info-box {
+    margin-top: 12px;
+    padding: 10px;
+    background: rgba(0, 150, 136, 0.12);
+    border-left: 4px solid #00bfa5;
+    border-radius: 8px;
+    font-size: 0.95rem;
+}
+
+.system-info-box h3,
+.system-info-box h4 {
+    margin-bottom: 4px;
+    color: #4dd0e1;
+}
+
+.system-info-box p {
+    margin-bottom: 6px;
+    color: #eeeeee;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1100px) {
+    .main-layout {
+        grid-template-columns: 260px 1fr;
+        grid-template-areas:
+            "left right"
+            "center center";
+        gap: 14px;
+    }
+
+    .sidebar-left {
+        grid-area: left;
+    }
+
+    .main-center {
+        grid-area: center;
+    }
+
+    .sidebar-right {
+        grid-area: right;
+    }
+}
+
+@media (max-width: 850px) {
+    body.theme-dark,
+    body.theme-light {
+        padding: 10px;
+    }
+
+    .app-container {
+        padding: 14px 10px;
+    }
+
+    .main-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar-left,
+    .sidebar-right {
+        flex-direction: column;
+    }
+}
+
+/* ===== LIGHT THEME ===== */
+body.theme-light {
+    background: #f5f5f5;
+    color: #111111;
+}
+
+/* Scrollbar-Farben im Light-Theme leicht anpassen */
+body.theme-light * {
+    scrollbar-color: #1976d2 #e0e0e0;
+}
+
+/* Panels im Light-Theme */
+body.theme-light .app-container {
+    background: #ffffff;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.25);
+    border-color: rgba(0, 0, 0, 0.15);
+}
+
+body.theme-light .panel-box,
+body.theme-light .graph-container {
+    background: #ffffff;
+    border-color: rgba(0, 0, 0, 0.15);
+}
+
+body.theme-light .jxgbox {
+    background: #ffffff !important;
+}
+
+/* Achsen & Tick Farben */
+body.theme-light .jxgbox .JXGtext {
+    fill: #000000 !important;
+    color: #000000 !important;
+}
+
+body.theme-light .jxgbox .JXGaxis {
+    stroke: #000000 !important;
+}
+
+body.theme-light .jxgbox .JXGtick {
+    stroke: #000000 !important;
+    fill: #000000 !important;
+}
+
+body.theme-light .jxgbox text {
+    fill: #000000 !important;
+}
+
+/* Slider Texte & Linien */
+body.theme-light .control-board text {
+    fill: #000000 !important;
+    color: #000000 !important;
+}
+
+body.theme-light .control-board line,
+body.theme-light .control-board path {
+    stroke: #000000 !important;
+    fill: #000000 !important;
+}
+
+/* Drop-Down Felder */
+body.theme-light .signal-select {
+    background: #ffffff;
+    color: #111111;
+    border-color: rgba(0, 0, 0, 0.35);
+}
+
+/* Zeit-Buttons im Light-Theme besser sichtbar */
+body.theme-light .time-controls button {
+    background: #e3f2fd;
+    color: #0d47a1;
+    border-color: #64b5f6;
+}
+
+body.theme-light .time-controls button:hover {
+    background: #bbdefb;
+    box-shadow: 0 2px 8px rgba(25, 118, 210, 0.5);
+}
+
+/* Übungs-Buttons im Light-Theme – kräftiges Dunkelgrün */
+body.theme-light .exercise-controls button {
+    background: #1b5e20;        /* dunkelgrün */
+    color: #e8f5e9;             /* hellgrün Text */
+    border-color: #2e7d32;
+}
+
+body.theme-light .exercise-controls button:hover {
+    background: #255d2a;
+}
+
+/* Lösungskasten im Light-Theme – starkes Gelb */
+body.theme-light .exercise-solution-box {
+    background: #fff59d;
+    color: #bf360c;
+    border-color: #fbc02d;
+}
+
+/* MC-Button im Light-Theme – dunkles Rot */
+body.theme-light .mc-check-btn {
+    background: #b71c1c;
+    color: #ffebee;
+    border-color: #ef5350;
+}
+
+body.theme-light .mc-check-btn:hover {
+    background: #c62828;
+}
+
+/* MC-Feedback bleibt gut sichtbar im Light-Theme */
+body.theme-light .mc-feedback.ok {
+    color: #2e7d32;
+}
+
+body.theme-light .mc-feedback.err {
+    color: #c62828;
+}
+
+/* Reale Systeme im Light-Theme – kräftige Farben */
+body.theme-light .realsystem-box {
+    background: #ffffff;
+    border-color: #0288d1;
+}
+
+body.theme-light .system-load-btn {
+    background: #006064;
+    color: #e0f7fa;
+    border-color: #00acc1;
+}
+
+body.theme-light .system-load-btn:hover {
+    background: #00838f;
+}
+
+body.theme-light .system-info-box {
+    background: #e0f2f1;
+    border-left-color: #00796b;
+}
+
+body.theme-light .system-info-box h3,
+body.theme-light .system-info-box h4 {
+    color: #004d40;
+}
+
+body.theme-light .system-info-box p {
+    color: #004d40;
+}
