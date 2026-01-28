@@ -655,7 +655,7 @@ function initControls() {
     });
 }
 
-// ===== ACHSFARBEN JE NACH THEME ANPASSEN =====
+// ===== ACHSFARBEN =====
 function fixAxisColors() {
     const textColor = ctx.currentTheme === 'dark' ? '#E0E0E0' : '#000000';
 
@@ -1191,3 +1191,4 @@ window.addEventListener("load", function () {
         });
     }
 });
+
