@@ -78,7 +78,7 @@ body * {
     transform: translateY(-1px);
 }
 
-/* ===== MAIN LAYOUT (3 SPALTEN) ===== */
+/* ===== MAIN LAYOUT ===== */
 .main-layout {
     display: grid;
     grid-template-columns: 280px 1fr 320px;
@@ -612,3 +612,4 @@ body.theme-light .system-info-box h4 {
 body.theme-light .system-info-box p {
     color: #004d40;
 }
+
