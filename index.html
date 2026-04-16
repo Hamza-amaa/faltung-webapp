@@ -42,7 +42,18 @@
                         <option value="dreieck">Dreieck</option>
                         <option value="gauss" selected>Gauss</option>
                         <option value="exponential">Exponentiell</option>
+                        <option value="custom">Eigene Funktion</option>
                     </select>
+
+                    <div id="custom-input-box" class="custom-function-box hidden">
+                        <label for="custom-input-function" class="label-inline">Eigene Funktion für x(τ):</label>
+                        <input id="custom-input-function" class="function-input" type="text"
+                               placeholder="z. B. rect((tau-taux)/dtx) oder exp(-tau/dtx)*u(tau)">
+                        <div class="function-help">
+                               Erlaubt: tau, Ax, dtx, taux, dth, pi, e, + - * / ^, sin, cos, tan, exp, log, sqrt, abs, u(...), rect(...), tri(...)
+                        </div>
+                        <div id="custom-input-error" class="function-error"></div>
+                    </div>
 
                     <p class="description">
                         Wähle hier die Form des Eingangssignals x(t). Über die Schieberegler
@@ -58,7 +69,18 @@
                         <option value="tp1">TP 1. Ordnung</option>
                         <option value="tp2">TP 2. Ordnung</option>
                         <option value="gauss_tp">Gauss-TP</option>
+                        <option value="custom">Eigene Funktion</option>
                     </select>
+
+                    <div id="custom-impulse-box" class="custom-function-box hidden">
+                        <label for="custom-impulse-function" class="label-inline">Eigene Funktion für h(τ):</label>
+                        <input id="custom-impulse-function" class="function-input" type="text"
+                               placeholder="z. B. exp(-tau/dth)*u(tau) oder delta(tau)">
+                        <div class="function-help">
+                               Erlaubt: tau, Ax, dtx, taux, dth, pi, e, + - * / ^, sin, cos, tan, exp, log, sqrt, abs, u(...), rect(...), tri(...), delta(...)
+                        </div>
+                        <div id="custom-impulse-error" class="function-error"></div>
+                    </div>
 
                     <p class="description">
                         Wähle hier die Impulsantwort des LZI-Systems. Δt<sub>h</sub> entspricht
@@ -126,20 +148,34 @@
                     <div id="boxEinImp" class="control-board slider-container"></div>
                 </div>
 
+                <div class="param-input-grid">
+                    <label>A_x <input id="Ax-input" type="number" step="0.05"></label>
+                    <label>Δt_x <input id="dtx-input" type="number" step="1"></label>
+                    <label>τ_x <input id="taux-input" type="number" step="0.1"></label>
+                </div>
+
                 <div class="panel-box">
                     <h2>Parameter h(t)</h2>
                     <div id="boxImpAnt" class="control-board slider-container"></div>
+                </div>
+
+                <div class="param-input-grid">
+                    <label>Δt_h <input id="dth-input" type="number" step="0.1"></label>
                 </div>
 
                 <div class="panel-box">
                     <h2>Zeitsteuerung t</h2>
                     <div id="boxAnimation" class="control-board slider-container"></div>
 
+                    <div class="param-input-grid"> 
+                        <label>t <input id="time-input" type="number" step="0.1"></label>
+                    </div>
+
                     <div class="time-controls">
-                        <button onclick="stepTime(-0.2)">⟵ Step</button>
+                        <button onclick="stepTime(-0.1)">⟵ Step</button>
                         <button onclick="startAnimation()">▶ Start</button>
                         <button onclick="pauseAnimation()">⏸ Pause</button>
-                        <button onclick="stepTime(0.2)">Step ⟶</button>
+                        <button onclick="stepTime(0.1)">Step ⟶</button>
                         <button onclick="resetApp()">⟲ Reset</button>
                     </div>
                 </div>
