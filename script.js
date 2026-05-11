@@ -581,24 +581,46 @@ function parseSimpleRectExpression(expr, kind = 'input') {
 
     const normalized = normalizeCustomExpression(expr).replace(/\s+/g, '');
 
-    const m = normalized.match(
-        /^(?:(Ax|[+\-]?\d*\.?\d+)\*)?rect\(\(tau([+\-]\d*\.?\d+)?\)\/(dtx|dth|[+\-]?\d*\.?\d+)\)$/
-    );
+    // Amplitude vor rect(...), z.B. Ax*rect(...), 2*rect(...)
+    const outer = normalized.match(/^(?:(Ax|[+\-]?\d*\.?\d+)\*)?rect\((.+)\)$/);
+    if (!outer) return null;
 
-    if (!m) return null;
+    const amp = resolveTokenValue(outer[1] || '1', kind);
+    const inside = outer[2];
 
-    const amp = resolveTokenValue(m[1] || '1', kind);
-    const shift = m[2] ? -parseFloat(m[2]) : 0;
-    const width = resolveTokenValue(m[3], kind);
+    let center = 0;
+    let width = 1;
 
-    if (!Number.isFinite(amp) || !Number.isFinite(width) || Math.abs(width) < 1e-9) {
+    // Fall 1: rect(tau)
+    if (inside === 'tau') {
+        center = 0;
+        width = 1;
+    }
+
+    // Fall 2: rect(tau-a) oder rect(tau+a)
+    else {
+        const shifted = inside.match(/^tau([+\-]\d*\.?\d+)$/);
+        if (shifted) {
+            center = -parseFloat(shifted[1]);
+            width = 1;
+        } else {
+            // Fall 3: rect((tau-a)/dtx), rect((tau-a)/2), rect((tau)/dtx)
+            const scaled = inside.match(/^\(tau([+\-]\d*\.?\d+)?\)\/(dtx|dth|[+\-]?\d*\.?\d+)$/);
+            if (!scaled) return null;
+
+            center = scaled[1] ? -parseFloat(scaled[1]) : 0;
+            width = resolveTokenValue(scaled[2], kind);
+        }
+    }
+
+    if (!Number.isFinite(amp) || !Number.isFinite(center) || !Number.isFinite(width) || Math.abs(width) < 1e-9) {
         return null;
     }
 
     return {
         amp,
-        center: shift,
-        width
+        center,
+        width: Math.abs(width)
     };
 }
 
